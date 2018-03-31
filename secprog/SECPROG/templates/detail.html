@@ -1,0 +1,146 @@
+{% load static %}
+{% load product_ttags %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Buy Watches</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/4-col-portfolio.css' %}" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}">Aion Wristwatches Co.</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'index' %}">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            {% if not 'user' in request.session %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'login_register' %}">Login/Register</a>
+                </li>
+            {% else %}
+
+                {% if request.session.type == 0 %}
+                    <li class="nav-item">
+                        <a href="{% url 'add_account' %}" class="nav-link">Add an Account</a>
+                    </li>
+                {% elif request.session.type == 1 %}
+                    <li class="nav-item">
+                        <a href="{% url 'add_product' %}" class="nav-link">Add a Product</a>
+                    </li>
+                {% elif request.session.type == 2 %}
+                    <li class="nav-item">
+                        <a href="{% url 'financial' %}" class="nav-link">Financial Records</a>
+                    </li>
+                {% elif request.session.type == 3 %}
+                    <li class="nav-item">
+                        <a href="{% url 'cart' %}" class="nav-link">Cart</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{% url 'history' %}" class="nav-link">Purchase History</a>
+                    </li>
+                {% endif %}
+
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                </li>
+                <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link">Log Out</a></li>
+            {% endif %}
+
+          </ul>
+
+            <form action="{% url 'index'  %}" class="form form-inline ml-4">
+                <input type = "text" name = "search" placeholder= "Search..." class = "box form-control form-control-sm ">
+                <input type="submit" value="Search" class="btn btn-outline-success btn-sm ml-3">
+            </form>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+      <!-- Page Heading -->
+      <h1 class="my-4">Product Detail:
+      </h1>
+        {% for product in products %}
+      <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
+              <div class="card h-100">
+                <a href="{% url 'detail' %}"><img class="card-img-top" src="{{ product.product.picture.url }}" name="productid" value="{{ product.product.id }}" alt=""></a>
+                <div class="card-body">
+                  <h4 class="card-title">
+                    {{ product.product.name }}
+                  </h4>
+                    {% if request.session.type == 1 %}
+                        <a href="{% url 'edit' product.product.id %}">Edit / Delete</a>
+                    {% elif request.session.type == 3 %}
+
+                    {% endif %}
+                  <div class="card-text">
+                      <p>{{ product.product.description }}</p>
+                      <span><b>Type:</b> {{ product.product.string_type }} </span>
+                  </div>
+                </div>
+                {% if request.session.type == 3 %}
+                    <div class="row">
+                        <form action="{% url 'add_cart' %}" class="form form-inline ml-5 mb-3">
+                            <input type="hidden" name="id" value="{{  product.product.id }}" required>
+                            <input type="number" name="num" id="num" min="1" class="form-control form-control-sm col-5 mr-2" value="1" required>
+                            <input type="submit" value="Purchase" class="btn btn-sm btn-outline-success col-4">
+                        </form>
+                    </div>
+
+
+                {% endif %}
+                <div class="card-footer">
+                    <b>Price: </b> Php. {{ product.product.price }}
+                </div>
+              </div>
+            </div>
+      <!-- /.row -->
+          {% endfor %}
+
+
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Group Group, 2018</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
+
+  </body>
+
+</html>

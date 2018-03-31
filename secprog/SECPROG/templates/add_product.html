@@ -1,0 +1,149 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Buy Watches</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/4-col-portfolio.css' %}" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}">Aion Wristwatches Co.</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'index' %}">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            {% if not 'user' in request.session %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'login_register' %}">Login/Register</a>
+                </li>
+            {% else %}
+
+                {% if request.session.type == 0 %}
+                    <li class="nav-item">
+                        <a href="{% url 'add_account' %}" class="nav-link">Add an Account</a>
+                    </li>
+                {% elif request.session.type == 1 %}
+                    <li class="nav-item active">
+                        <a href="{% url 'add_product' %}" class="nav-link">Add a Product</a>
+                    </li>
+                {% endif %}
+
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                </li>
+                <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link">Log Out</a></li>
+            {% endif %}
+
+          </ul>
+
+            <form action="{% url 'index' %}" class="form form-inline ml-4">
+                <input type = "text" name = "search" placeholder= "Search..." class = "box form-control form-control-sm ">
+                <input type="submit" value="Search" class="btn btn-outline-success btn-sm ml-3">
+            </form>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+      <!-- Page Heading -->
+
+        <div class="row">
+            <div class="col mb-5">
+            <h2 class="my-4">Add a Product</h2>
+            <form action="#" method="POST" class="form" enctype="multipart/form-data">
+                <div class="container">
+                    <div class="row mb-3">
+                        <label for="name" class="col-4">Product Name:</label>
+                        <input type="text" name="name" id="name" class="form-control form-control-sm col mr-3" required>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="price" class="col-4">Price:</label>
+                        <input type="number" name="price" id="price" class="form-control form-control-sm col mr-3" required step="0.01">
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="stock" class="col-4">Stock:</label>
+                        <input type="number" name="stock" id="stock" class="form-control form-control-sm col mr-3" required>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="password" class="col-4">Watch Type:</label>
+                        <select name="type" id="type" class="form-control form-control-sm col mr-3" required>
+                            <option value="0">Analog Watch</option>
+                            <option value="1">Digital Watch</option>
+                            <option value="2">Smart Watch</option>
+                        </select>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="desc" class="col-4">Description:</label>
+                        <textarea name="desc" id="desc" rows="5" class="form-control form-control-sm mr-3 col" required></textarea>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="picture" class="col-4">Picture:</label>
+                        <input type="file" name="picture" id="picture" class="form-control form-control-sm mr-3 col" required>
+                    </div>
+
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <div class="col-1"><button type="submit" class="btn btn-success">Add Product</button></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            {% if add_log %}
+                                <div class="col"><div class="alert alert-success"><b>Success!</b> {{ add_log }}</div></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        </div>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Group Group, 2018</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
+
+  </body>
+
+</html>
