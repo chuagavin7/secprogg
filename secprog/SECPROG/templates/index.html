@@ -93,12 +93,14 @@
             <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
               <div class="card h-100">
                   
-                  <form action="{% url 'detail' %}" method="get">
+                  
                     <input type = "image" img class="card-img-top" src="{{ product.picture.url }}" name="productid" value="{{ product.id }}">
-                  </form>
+                  
                 <div class="card-body">
                   <h4 class="card-title">
+                    <a href="{% url 'detail' product.id %}">
                         {{ product.name }}
+                    </a>
                   </h4>
                     {% if request.session.type == 1 %}
                         <a href="{% url 'edit' product.id %}">Edit / Delete</a>

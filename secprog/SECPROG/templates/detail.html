@@ -87,29 +87,30 @@
       <!-- Page Heading -->
       <h1 class="my-4">Product Detail:
       </h1>
-        {% for product in products %}
       <div class="row">
             <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
               <div class="card h-100">
-                <a href="{% url 'detail' %}"><img class="card-img-top" src="{{ product.product.picture.url }}" name="productid" value="{{ product.product.id }}" alt=""></a>
+                <img class="card-img-top" src="{{ product.picture.url }}" name="productid" value="{{ product.id }}" alt="">
                 <div class="card-body">
                   <h4 class="card-title">
-                    {{ product.product.name }}
+                      <a href="{% url 'detail' product.id %}">
+                    {{ product.name }}
+                      </a>
                   </h4>
                     {% if request.session.type == 1 %}
-                        <a href="{% url 'edit' product.product.id %}">Edit / Delete</a>
+                        <a href="{% url 'edit' product.id %}">Edit / Delete</a>
                     {% elif request.session.type == 3 %}
 
                     {% endif %}
                   <div class="card-text">
-                      <p>{{ product.product.description }}</p>
-                      <span><b>Type:</b> {{ product.product.string_type }} </span>
+                      <p>{{ product.description }}</p>
+                      <span><b>Type:</b> {{ product.string_type }} </span>
                   </div>
                 </div>
                 {% if request.session.type == 3 %}
                     <div class="row">
                         <form action="{% url 'add_cart' %}" class="form form-inline ml-5 mb-3">
-                            <input type="hidden" name="id" value="{{  product.product.id }}" required>
+                            <input type="hidden" name="id" value="{{product.id }}" required>
                             <input type="number" name="num" id="num" min="1" class="form-control form-control-sm col-5 mr-2" value="1" required>
                             <input type="submit" value="Purchase" class="btn btn-sm btn-outline-success col-4">
                         </form>
@@ -118,12 +119,11 @@
 
                 {% endif %}
                 <div class="card-footer">
-                    <b>Price: </b> Php. {{ product.product.price }}
+                    <b>Price: </b> Php. {{ product.price }}
                 </div>
               </div>
             </div>
       <!-- /.row -->
-          {% endfor %}
 
 
     </div>

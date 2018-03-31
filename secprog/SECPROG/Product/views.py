@@ -46,24 +46,11 @@ def cart(request):
     context['products'] = products
     return render(request, 'cart.html', context)
 
-def detail(request):
+def detail(request, productid):
     context = {}
-    products_filtered = []
-    product = Product.objects.all()
-    request.session['productid'] = 0
-    if request.GET and ('productid' in request.session or 'productid' in request.get):
+    product = Product.objects.get(id=int(productid))
 
-        if request.session['productid'] != int(request.GET.get('productid', 0)):
-            request.session['productid'] = int(request.GET.get('productid', 0))
-        
-    if 'productid' in request.session:
-        m = request.session['productid']
-    else: 
-        m = 0
-    for p in product:
-        if p.id == m:
-            products_filtered.append(p)
-        context['products'] = products_filtered
+    context['product'] = product
     
     return render(request, 'detail.html', context)
 
