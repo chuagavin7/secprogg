@@ -129,7 +129,7 @@ def financial(request):
                         digitalT += t.product.price * t.quantity
             except Product.DoesNotExist:
                 pass
-    if m == 3:
+    if m == 3 or m == 4:
         context['products'] = products
     elif m == 0:
         for p in products:
