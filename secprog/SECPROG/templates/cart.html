@@ -1,6 +1,8 @@
 {% load static %}
 {% load product_ttags %}
 <!DOCTYPE html>
+
+
 <html lang="en">
 
   <head>
@@ -96,11 +98,16 @@
             <form action="{% url 'buy' %}" method="POST" class="form form-inline">
                 {% csrf_token %}
                 <div class="col">
-                    <input type="text" name="credit" id="credit" placeholder="Credit card number..." class="form form-control" required>
+                    <input type="text" name="credit" id="credit" placeholder="Credit card number..." maxlength="12" class="form form-control" required>
+                    <input type="text" name="ccv" id="ccv" placeholder="CCV" class="form form-control" maxlength="3" required>
+                    <input type="month" class="form form-control" required>
                     <input type="submit" value="Purchase" class="btn btn-outline-success">
+                    <h6> </h6>
+                    <h6><b>Contact Number: </b> {{ user.contact_num }}</h6>
                     <h6><b>Billing Address: </b> {{ user.billingAdd }}</h6>
                     <h6><b>Shipping Address: </b> {{ user.shippingAdd }}</h6>
                 </div>
+                
             </form>
         </div>
 

@@ -25,7 +25,8 @@ def cart(request):
     context = {
         'total': 0.0, 'num': 0
     }
-
+    user = User.objects.get(id=request.session['user'])
+    context['user'] = user
     products = []
 
     if 'cart' in request.session:
