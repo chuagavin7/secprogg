@@ -4,6 +4,7 @@ from django.shortcuts import render
 from Product.models import Product, Transaction
 from SECPROG.views import index
 from User.models import User
+from .models import Review
 
 
 def add_cart(request):
@@ -48,10 +49,13 @@ def cart(request):
     return render(request, 'cart.html', context)
 
 def detail(request, productid):
-    context = {}
     product = Product.objects.get(id=int(productid))
+    title = Review.objects.get(id=int(productid)).title
+    review = Review.objects.get(id=int(productid)).review
+    user = Review.objects.get(id=int(productid)).user
+    date_created = Review.objects.get(id=int(productid)).date_created
 
-    context['product'] = product
+    context = {"product": product, "review": review, "title": title, "user": user, "date_created": date_created}
     
     return render(request, 'detail.html', context)
 
