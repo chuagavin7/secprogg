@@ -53,7 +53,7 @@ def detail(request, productid):
 
     review = Review.objects.all()
 
-    context = {"product": product, "review": review}
+    context = {"product": product, "reviews": review}
 
     
     return render(request, 'detail.html', context)

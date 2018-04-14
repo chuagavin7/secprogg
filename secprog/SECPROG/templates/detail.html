@@ -124,7 +124,6 @@
 
 
         <div class="col-6 col-md-7">
-        {% if reviews %}
             {% for rev in reviews %}
             <div class="card bg-light mb-3" style="max-width: 75rem;">
               <div class="card-header">{{ rev.user }} | {{ rev.date_created}}</div>
@@ -134,7 +133,6 @@
               </div>
             </div>
             {% endfor %}
-        {% endif %}
         </div>
 
 
