@@ -50,12 +50,9 @@ def cart(request):
 
 def detail(request, productid):
     product = Product.objects.get(id=int(productid))
-    title = Review.objects.get(id=int(productid)).title
-    review = Review.objects.get(id=int(productid)).review
-    user = Review.objects.get(id=int(productid)).user
-    date_created = Review.objects.get(id=int(productid)).date_created
+    review = Review.objects.all()
 
-    context = {"product": product, "review": review, "title": title, "user": user, "date_created": date_created}
+    context = {"product": product, "review": review}
     
     return render(request, 'detail.html', context)
 

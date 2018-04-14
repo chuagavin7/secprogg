@@ -129,10 +129,10 @@
         <div class="col-6 col-md-7">
             {% for rev in review %}
             <div class="card bg-light mb-3" style="max-width: 75rem;">
-              <div class="card-header">{{ user }} | {{ date_created}}</div>
+              <div class="card-header">{{ rev.user }} | {{ rev.date_created}}</div>
               <div class="card-body">
-                <h5 class="card-title">{{ title }}</h5>
-                <p class="card-text">{{ review }}</p>
+                <h5 class="card-title">{{ rev.title }}</h5>
+                <p class="card-text">{{ rev.review }}</p>
               </div>
             </div>
             {% endfor %}
