@@ -85,7 +85,7 @@
     <div class="container">
 
       <!-- Page Heading -->
-      <h1 class="my-4">Product Detail:
+      <h1 class="my-4">{{ product.name }}
       </h1>
       <div class="row">
             <div class="col-6 col-md-4 portfolio-item">
@@ -93,9 +93,6 @@
                 <img class="card-img-top" src="{{ product.picture.url }}" name="productid" value="{{ product.id }}" alt="">
                 <div class="card-body">
                   <h4 class="card-title">
-                      <a href="{% url 'detail' product.id %}">
-                    {{ product.name }}
-                      </a>
                   </h4>
                     {% if request.session.type == 1 %}
                         <a href="{% url 'edit' product.id %}">Edit / Delete</a>
@@ -127,7 +124,8 @@
 
 
         <div class="col-6 col-md-7">
-            {% for rev in review %}
+        {% if reviews %}
+            {% for rev in reviews %}
             <div class="card bg-light mb-3" style="max-width: 75rem;">
               <div class="card-header">{{ user }} | {{ date_created}}</div>
               <div class="card-body">
@@ -136,6 +134,7 @@
               </div>
             </div>
             {% endfor %}
+        {% endif %}
         </div>
 
 
