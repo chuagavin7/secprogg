@@ -51,8 +51,9 @@ def cart(request):
 def detail(request, productid):
     product = Product.objects.get(id=int(productid))
 
-    review = Review.objects.all()
+    review = Review.objects.filter(id=int(productid))
 
+    
     context = {"product": product, "reviews": review}
 
     
