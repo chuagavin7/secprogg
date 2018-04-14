@@ -50,9 +50,11 @@ def cart(request):
 
 def detail(request, productid):
     product = Product.objects.get(id=int(productid))
+
     review = Review.objects.all()
 
     context = {"product": product, "review": review}
+
     
     return render(request, 'detail.html', context)
 
