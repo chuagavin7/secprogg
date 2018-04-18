@@ -109,6 +109,9 @@
                 </div>
                 
             </form>
+            {% if buy_error %}
+                <div class="col"><div class="alert alert-danger"><b>Error!</b> {{ buy_error }}</div></div>
+            {% endif %}
         </div>
 
       <div class="row">

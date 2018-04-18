@@ -9,10 +9,10 @@ from SECPROG.views import index
 
 def login_register(request):
     context = {}
-    flag = 0
-    reg_error = []
     error = {}
+    flag = 0
     if request.method == "POST":
+        reg_error = []
         if 'login' in request.POST:
             try:
                 user = User.objects.get(username=request.POST['username'], password=request.POST['password'])
@@ -25,25 +25,43 @@ def login_register(request):
         elif 'register' in request.POST:
             try:
                 user = User.objects.get(username=request.POST['username'])
-                error['error'] =  'That username is already taken.'
-                reg_error.append(error)
+                error['log_error'] =  'That username is already taken.'
             except User.DoesNotExist:
                 password1 =request.POST['password1']
                 password=request.POST['password']
+                username=request.POST['username']
+                contact_num=request.POST['contact']
+                name=request.POST['name']
+                name = name.split(' ')
                 if password != password1:
-                    error['error'] = "Both entered passwords don't match."
-                    reg_error.append(error)
+                    context['reg_error'] = "Both entered passwords should match."
                     return render(request, 'login.html', context)
                 elif password == password1:
-                    if re.match("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9#?!@$%^&*-]).{8,}$", password):   
-                        user = User(username=request.POST['username'], password=request.POST['password'], contact_num=request.POST['contact'],
-                                    name=request.POST['name'], billingAdd=request.POST['billing'], shippingAdd=request.POST['shipping'])
-                        user.save()
-                        context['reg_success'] = "Account has been created."
+                    if re.match('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9#?!@$%^&*-]).{7,}$', password) and re.match('^[a-zA-Z0-9].{5,}$', username) and re.match('^(\+)(639)([0-9]{9})$', contact_num) and username.lower() not in password.lower():
+                        for n in name:
+                            if n in password:
+                                flag += 1
+                        if flag == 0:
+                            user = User(username=request.POST['username'], password=request.POST['password'], contact_num=request.POST['contact'], name=request.POST['name'], billingAdd=request.POST['billing'], shippingAdd=request.POST['shipping'])
+                            user.save()
+                            context['reg_success'] = "Account has been created."
                     else:
-                        error['error'] = "Password should contain both lower and upper case characters, one number & one symbol (#?!@$%^&*-) and should be at least 8 characters long"
-                        reg_error.append(error)
-                    context['error'] = reg_error
+                    
+                        if re.match('^[a-zA-Z0-9].{5,}$', username) == None:
+                            context['reg_error'] = "Username should only contain characters & numbers and should be least 6 characters long!"
+                            return render(request, 'login.html', context)
+                        if re.match('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9#?!@$%^&*-]).{7,}$', password) == None:
+                            context['reg_error'] = "Password should contain both lower and upper case characters, one number & one symbol (#?!@$%^&*-) and should be at least 8 characters long!"
+                            return render(request, 'login.html', context)
+                        if flag > 0:
+                            context['reg_error'] = "Password should not contain your name!"
+                            return render(request, 'login.html', context)
+                        if username.lower() in password.lower():
+                            context['reg_error'] = "Password should not contain your username!"
+                            return render(request, 'login.html', context)
+                        if re.match('^(\+)(639)[0-9]{9}$', contact_num) == None:
+                            context['reg_error'] = "Contact Number should be in the correct format!"
+                            return render(request, 'login.html', context)
 
     return render(request, 'login.html', context)
 

@@ -6,7 +6,6 @@ from SECPROG.views import index
 from User.models import User
 from .models import Review
 
-
 def add_cart(request):
     if request.method == "GET":
         item = {}
@@ -176,5 +175,3 @@ def buy(request):
                     transaction.save()
                 except Product.DoesNotExist and User.DoesNotExist:
                     pass
-
-    return clear_cart(request)
