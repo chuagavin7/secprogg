@@ -15,7 +15,12 @@ def login_register(request):
         reg_error = []
         if 'login' in request.POST:
             try:
-                user = User.objects.get(username=request.POST['username'], password=request.POST['password'])
+                password=request.POST['password']
+                hashGen = hashlib.sha256()
+                password = password.encode('utf-8')
+                hashGen.update(password)
+                hashed = hashGen.hexdigest()
+                user = User.objects.get(username=request.POST['username'], password=hashed)
                 request.session['user'] = user.pk
                 request.session['type'] = user.get_type()
                 return index(request)
