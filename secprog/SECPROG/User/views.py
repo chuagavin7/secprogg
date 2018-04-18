@@ -167,13 +167,24 @@ def change_password(request):
     if request.method == "POST":
         user = User.objects.get(id=request.session['user'])
         old_pass = user.password
-
-        if request.POST['pass'] == old_pass:
-            user.password = request.POST['pass']
+        current_pass = request.POST['pass']
+        hashGen = hashlib.sha256()
+        current_pass = current_pass.encode('utf-8')
+        hashGen.update(current_pass)
+        hashedcurrent_pass = hashGen.hexdigest()
+        if hashedcurrent_pass == old_pass:
+            new_pass = request.POST['npass']
+            hashGen = hashlib.sha256()
+            new_pass = new_pass.encode('utf-8')
+            hashGen.update(new_pass)
+            hashednew_pass = hashGen.hexdigest()
+            user.password = hashednew_pass
             user.save()
 
             context['change_success'] = "Password has been changed"
+            context['user'] = user
         else:
             context['change_error'] = "Incorrect old password."
+            context['user'] = user
 
     return render(request, 'profile.html', context)

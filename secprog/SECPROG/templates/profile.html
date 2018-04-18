@@ -95,6 +95,13 @@
                 {% if user.get_type != 3 %}
                     <h6><b>Account Type: </b> Staff/{{ user.string_type }}</h6>
                     <br/>
+                {% endif %}
+                {% if user.get_type == 3 %}
+                    <h6><b>Contact Number: </b> {{ user.contact_num }}</h6>
+                    <h6><b>Billing Address: </b> {{ user.billingAdd }}</h6>
+                    <h6><b>Shipping Address: </b> {{ user.shippingAdd }}</h6>
+                    <h6><b>Account Type: </b> Customer</h6>
+                {% endif %}
                     <form action="{% url 'change_password' %}" method="POST" class="form form-inline">
                         {% csrf_token %}
                         <label class="mr-3">Change Password: </label>
@@ -113,12 +120,7 @@
                             </div>
                         </div>
                     </form>
-                {% else %}
-                    <h6><b>Contact Number: </b> {{ user.contact_num }}</h6>
-                    <h6><b>Billing Address: </b> {{ user.billingAdd }}</h6>
-                    <h6><b>Shipping Address: </b> {{ user.shippingAdd }}</h6>
-                    <h6><b>Account Type: </b> Customer</h6>
-                {% endif %}
+                
             </div>
         </div>
     </div>
