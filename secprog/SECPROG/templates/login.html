@@ -119,6 +119,10 @@
                             <label for="password" class="col-4">Password:</label>
                             <input type="password" name="password" id="password" class="form-control form-control-sm col mr-3" required>
                         </div>
+                        <div class="row mb-3">
+                            <label for="password" class="col-4">Retype Password:</label>
+                            <input type="password" name="password1" id="password1" class="form-control form-control-sm col mr-3" required>
+                        </div>
 
                         <div class="row mb-3">
                             <label for="contact" class="col-4">Contact Number:</label>
@@ -143,9 +147,10 @@
 
                         <div class="row">
                             <div class="col">
-                                {% if reg_error %}
-                                    <div class="col"><div class="alert alert-danger"><b>Error!</b> {{ reg_error }}</div></div>
-                                {% endif %}
+                                
+                                {% for e in error %}
+                                    <div class="col"><div class="alert alert-danger"><b>Error!</b> {{ e.error }}</div></div>
+                                {% endfor %}
 
                                 {% if reg_success %}
                                     <div class="col"><div class="alert alert-success"><b>Success!</b> {{ reg_success }}</div></div>

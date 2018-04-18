@@ -1,7 +1,6 @@
 from django.core import serializers
 from django.shortcuts import render
-
-
+import re
 # Create your views here.
 from Product.models import Product
 from User.models import User, Staff
@@ -10,11 +9,13 @@ from SECPROG.views import index
 
 def login_register(request):
     context = {}
+    flag = 0
+    reg_error = []
+    error = {}
     if request.method == "POST":
         if 'login' in request.POST:
             try:
                 user = User.objects.get(username=request.POST['username'], password=request.POST['password'])
-
                 request.session['user'] = user.pk
                 request.session['type'] = user.get_type()
                 return index(request)
@@ -24,12 +25,25 @@ def login_register(request):
         elif 'register' in request.POST:
             try:
                 user = User.objects.get(username=request.POST['username'])
-                context['reg_error'] = 'That username is already taken.'
+                error['error'] =  'That username is already taken.'
+                reg_error.append(error)
             except User.DoesNotExist:
-                user = User(username=request.POST['username'], password=request.POST['password'], contact_num=request.POST['contact'],
-                            name=request.POST['name'], billingAdd=request.POST['billing'], shippingAdd=request.POST['shipping'])
-                user.save()
-                context['reg_success'] = "Account has been created."
+                password1 =request.POST['password1']
+                password=request.POST['password']
+                if password != password1:
+                    error['error'] = "Both entered passwords don't match."
+                    reg_error.append(error)
+                    return render(request, 'login.html', context)
+                elif password == password1:
+                    if re.match("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9#?!@$%^&*-]).{8,}$", password):   
+                        user = User(username=request.POST['username'], password=request.POST['password'], contact_num=request.POST['contact'],
+                                    name=request.POST['name'], billingAdd=request.POST['billing'], shippingAdd=request.POST['shipping'])
+                        user.save()
+                        context['reg_success'] = "Account has been created."
+                    else:
+                        error['error'] = "Password "
+                        reg_error.append(error)
+                    context['error'] = reg_error
 
     return render(request, 'login.html', context)
 
