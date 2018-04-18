@@ -41,7 +41,7 @@ def login_register(request):
                         user.save()
                         context['reg_success'] = "Account has been created."
                     else:
-                        error['error'] = "Password "
+                        error['error'] = "Password should contain both lower and upper case characters, one number & one symbol (#?!@$%^&*-) and should be at least 8 characters long"
                         reg_error.append(error)
                     context['error'] = reg_error
 
