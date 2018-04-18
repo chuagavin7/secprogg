@@ -5,7 +5,7 @@ import re
 from Product.models import Product
 from User.models import User, Staff
 from SECPROG.views import index
-
+import hashlib 
 
 def login_register(request):
     context = {}
@@ -42,7 +42,11 @@ def login_register(request):
                             if n in password:
                                 flag += 1
                         if flag == 0:
-                            user = User(username=request.POST['username'], password=request.POST['password'], contact_num=request.POST['contact'], name=request.POST['name'], billingAdd=request.POST['billing'], shippingAdd=request.POST['shipping'])
+                            hashGen = hashlib.sha256()
+                            password = password.encode('utf-8')
+                            hashGen.update(password)
+                            hashed = hashGen.hexdigest()
+                            user = User(username=request.POST['username'], password=hashed, contact_num=request.POST['contact'], name=request.POST['name'], billingAdd=request.POST['billing'], shippingAdd=request.POST['shipping'])
                             user.save()
                             context['reg_success'] = "Account has been created."
                     else:
