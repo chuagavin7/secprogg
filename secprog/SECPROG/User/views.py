@@ -7,6 +7,9 @@ from User.models import User, Staff
 from SECPROG.views import index
 import hashlib 
 import logging
+from axes.utils import reset
+from django.contrib.auth.signals import user_login_failed
+
 logger = logging.getLogger(__name__)
 def login_register(request):
     context = {}
@@ -25,9 +28,18 @@ def login_register(request):
                 request.session['user'] = user.pk
                 request.session['type'] = user.get_type()
                 logger.info('%s logged on the system at ', user.username)
+                reset(username=request.user.username)
                 return index(request)
 
             except User.DoesNotExist:
+                #inform axes of failed login
+                user_login_failed.send(
+                    sender = User,
+                    request = request,
+                    credentials = {
+                        'username': username,
+                    }
+                )
                 context['log_error'] = 'Cannot find an account with that combination.'
         elif 'register' in request.POST:
             try:

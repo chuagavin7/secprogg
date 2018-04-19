@@ -48,6 +48,23 @@ LOGGING = {
     },
 }
 
+
+# Memcached
+# https://docs.djangoproject.com/en/2.0/topics/cache/
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+    },
+    'axes_cache': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
+AXES_CACHE = 'axes_cache'
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -60,6 +77,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'session_security',
     'sslserver',
+    'axes',
 ]
 
 MIDDLEWARE = [
@@ -93,6 +111,13 @@ TEMPLATES = [
         },
     },
 ]
+
+
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 
 WSGI_APPLICATION = 'SECPROG.wsgi.application'
 
@@ -131,6 +156,16 @@ SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+
+import datetime as dt
+#Settings for django-axes
+AXES_CACHE = 'default'
+AXES_FAILURE_LIMIT = 5
+AXES_LOCK_OUT_AT_FAILURE = True
+AXES_COOLOFF_TIME = dt.timedelta(minutes=10)
+AXES_USE_USER_AGENT = True
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
