@@ -52,15 +52,9 @@ def cart(request, message):
 
 def detail(request, productid):
     product = Product.objects.get(id=int(productid))
-
-    review = Review.objects.filter(id=int(productid))
-
-    
+    review = Review.objects.filter(product_id=product)
     context = {"product": product, "reviews": review}
-
-    
     return render(request, 'detail.html', context)
-
 
 def history(request):
     context = {}
