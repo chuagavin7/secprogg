@@ -7,6 +7,9 @@ from User.models import User, Staff
 from SECPROG.views import index
 import hashlib 
 import logging
+from axes.utils import reset
+from django.contrib.auth.signals import user_login_failed
+
 logger = logging.getLogger(__name__)
 def login_register(request):
     context = {}
@@ -25,9 +28,19 @@ def login_register(request):
                 request.session['user'] = user.pk
                 request.session['type'] = user.get_type()
                 logger.info('%s logged on the system at ', user.username)
+                reset(username=request.user.username)
                 return index(request)
 
             except User.DoesNotExist:
+                username = request.user.username
+                #inform axes of failed login
+                user_login_failed.send(
+                    sender = User,
+                    request = request,
+                    credentials = {
+                        'username': username,
+                    }
+                )
                 context['log_error'] = 'Cannot find an account with that combination.'
         elif 'register' in request.POST:
             try:
@@ -40,10 +53,24 @@ def login_register(request):
                 contact_num=request.POST['contact']
                 name=request.POST['name']
                 name = name.split(' ')
+                
+                if username in ['11111111','12345678', 'abcd1234', 'account1', 'administrator', 'monkey123', 'username', 'qwertyuiop', 'test1234']:
+                    context['reg_error'] = "Username too common!"
+                    return render(request, 'login.html', context)
+                    
+                if password in ['12345678', '11111111', 'password', 'letmein1', 'administrator', 'account1', 'qwertyuiop', 'basketball', 'testtest']:
+                    context['reg_error'] = "Password too common!"
+                    return render(request, 'login.html', context)
+                
+                
                 if password != password1:
                     context['reg_error'] = "Both entered passwords should match."
                     return render(request, 'login.html', context)
                 elif password == password1:
+                    if username == password:
+                        context['reg_error'] = "Username and password should not match!"
+                        return render(request, 'login.html', context)
+                    
                     if re.match('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9#?!@$%^&*-]).{7,}$', password) and re.match('^[a-zA-Z0-9].{5,}$', username) and re.match('^(\+)(639)([0-9]{9})$', contact_num) and username.lower() not in password.lower():
                         for n in name:
                             if n in password:

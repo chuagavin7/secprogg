@@ -14,6 +14,7 @@ def index(request, page=1):
     products = Product.objects.all()
 
     if request.method == "GET" and 'search' in request.GET:
+        print("waw")
         search = request.GET['search'].split(',')
         filterer = Q()
 
@@ -21,7 +22,16 @@ def index(request, page=1):
             filterer = filterer | Q(name__icontains=s)
 
         products = products.filter(filterer)
+    
+    elif request.method == "GET" and 'sort' in request.GET:
+        sort = request.GET['sort'].split(',')
+        filterer = Q()
 
+        for s in sort:
+            filterer = filterer | Q(type__icontains=s)
+
+        products = products.filter(filterer)
+    
     context = {
         'products': products,
     }
