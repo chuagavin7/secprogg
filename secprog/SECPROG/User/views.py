@@ -32,6 +32,7 @@ def login_register(request):
                 return index(request)
 
             except User.DoesNotExist:
+                username = request.user.username
                 #inform axes of failed login
                 user_login_failed.send(
                     sender = User,
