@@ -71,7 +71,6 @@
           </ul>
 
             <form action="{% url 'index' %}" class="form form-inline ml-4">
-                {% csrf token %}
                 <input type = "text" name = "search" placeholder= "Search..." class = "box form-control form-control-sm ">
                 <input type="submit" value="Search" class="btn btn-outline-success btn-sm ml-3">
             </form>
