@@ -93,6 +93,7 @@ MIDDLEWARE = [
     'session_security.middleware.SessionSecurityMiddleware',
 ]
 
+
 ROOT_URLCONF = 'SECPROG.urls'
 
 TEMPLATES = [
