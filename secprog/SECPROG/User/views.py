@@ -207,3 +207,4 @@ def change_password(request):
             context['change_error'] = "Incorrect old password."
 
     return render(request, 'profile.html', context)
+

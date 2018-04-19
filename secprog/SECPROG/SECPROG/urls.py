@@ -17,9 +17,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, re_path, include
-from SECPROG import views
+from SECPROG import views 
 from User import views as user_views
 from Product import views as prod_views
+from django.conf.urls import handler404, handler500, handler403, handler400
 
 urlpatterns = [
     path('session_security/', include('session_security.urls')),
@@ -42,3 +43,8 @@ urlpatterns = [
     path('<int:page>/', views.index, name='index_page'),
     path('', views.index, name='index'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = views.not_found
+handler500 = views.server_error
+handler403 = views.permission_denied
+handler400 = views.bad_request
