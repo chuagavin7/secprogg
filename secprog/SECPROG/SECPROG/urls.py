@@ -16,13 +16,13 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, re_path
-
+from django.urls import path, re_path, include
 from SECPROG import views
 from User import views as user_views
 from Product import views as prod_views
 
 urlpatterns = [
+    path('session_security/', include('session_security.urls')),
     path('admin/', admin.site.urls),
     path('login_register/', user_views.login_register, name='login_register'),
     path('logout/', user_views.logout, name='logout'),

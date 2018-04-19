@@ -58,6 +58,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'session_security',
+    'sslserver',
 ]
 
 MIDDLEWARE = [
@@ -70,6 +72,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django_session_timeout.middleware.SessionTimeoutMiddleware',
+    'session_security.middleware.SessionSecurityMiddleware',
 ]
 
 ROOT_URLCONF = 'SECPROG.urls'
@@ -126,6 +129,8 @@ LOGIN_URL = '/login_register/'
 SESSION_EXPIRE_SECONDS = 360
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
