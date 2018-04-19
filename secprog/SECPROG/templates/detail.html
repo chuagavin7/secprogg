@@ -57,7 +57,7 @@
                     </li>
                 {% elif request.session.type == 3 %}
                     <li class="nav-item">
-                        <a href="{% url 'cart' %}" class="nav-link">Cart</a>
+                        <a href="{% url 'cart' message=None %}" class="nav-link">Cart</a>
                     </li>
 
                     <li class="nav-item">

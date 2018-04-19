@@ -57,7 +57,7 @@
                     </li>
                 {% elif request.session.type == 3 %}
                     <li class="nav-item">
-                        <a href="{% url 'cart' %}" class="nav-link">Cart</a>
+                        <a href="{% url 'cart' message=None %}" class="nav-link">Cart</a>
                     </li>
 
                     <li class="nav-item">
@@ -120,16 +120,7 @@
                         </form>
                     </div>
 
-                    <div class="row ml-2 mb-3">
-                        {% if product|is_buyer:request.session.user %}
-{#                            <a href="#" class="col">Post Review</a>#}
-                        {% endif %}
-
-                        {% if product.has_reviews %}
-                            -
-{#                            <a href="#" class="col">View Reviews</a>#}
-                        {% endif %}
-                    </div>
+                    
                 {% endif %}
                 <div class="card-footer">
                     <b>Price: </b> Php. {{ product.price }}
@@ -143,19 +134,7 @@
       <div class="row">
           <div class="col">
               <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    {% if products.has_previous %}
-                        <a class="page-link" href="{% url 'index_page' products.paginator.previous_page_number %}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                    {% else %}
-                        <span class="page-link">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                        </span>
-                    {% endif %}
-                </li>
+
                 {% for p in products.paginator.page_range %}
                     <li class="page-item {% if page == p %} active {% endif %}">
                         <a href="{% url 'index_page' p %}" class="page-link">{{ p }}</a>

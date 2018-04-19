@@ -1,3 +1,5 @@
+
+
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render
@@ -5,7 +7,8 @@ from django.shortcuts import render
 
 # Create your views here.
 from Product.models import Product
-
+import logging
+logger = logging.getLogger(__name__)
 
 def index(request, page=1):
     products = Product.objects.all()

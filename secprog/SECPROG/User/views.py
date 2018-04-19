@@ -6,7 +6,8 @@ from Product.models import Product
 from User.models import User, Staff
 from SECPROG.views import index
 import hashlib 
-
+import logging
+logger = logging.getLogger(__name__)
 def login_register(request):
     context = {}
     error = {}
@@ -23,6 +24,7 @@ def login_register(request):
                 user = User.objects.get(username=request.POST['username'], password=hashed)
                 request.session['user'] = user.pk
                 request.session['type'] = user.get_type()
+                logger.info('%s logged on the system at ', user.username)
                 return index(request)
 
             except User.DoesNotExist:
@@ -163,9 +165,11 @@ def profile(request):
 
 def change_password(request):
     context = {}
-
+    flag = 0
     if request.method == "POST":
         user = User.objects.get(id=request.session['user'])
+        context['user'] = user
+        username = user.username
         old_pass = user.password
         current_pass = request.POST['pass']
         hashGen = hashlib.sha256()
@@ -174,17 +178,32 @@ def change_password(request):
         hashedcurrent_pass = hashGen.hexdigest()
         if hashedcurrent_pass == old_pass:
             new_pass = request.POST['npass']
-            hashGen = hashlib.sha256()
-            new_pass = new_pass.encode('utf-8')
-            hashGen.update(new_pass)
-            hashednew_pass = hashGen.hexdigest()
-            user.password = hashednew_pass
-            user.save()
-
+            name=user.name
+            name=name.split(' ')
+            if re.match('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9#?!@$%^&*-]).{7,}$', new_pass) and username.lower() not in new_pass.lower():
+                for n in name:
+                    if n.lower() in new_pass.lower():
+                        flag += 1
+                if flag == 0:
+                    hashGen = hashlib.sha256()
+                    new_pass = new_pass.encode('utf-8')
+                    hashGen.update(new_pass)
+                    hashednew_pass = hashGen.hexdigest()
+                    user.password = hashednew_pass
+                    user.save()
+            else: 
+                if re.match('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9#?!@$%^&*-]).{7,}$', new_pass) == None:
+                    context['change_error'] = "Password should contain both lower and upper case characters, one number & one symbol (#?!@$%^&*-) and should be at least 8 characters long!"
+                    return render(request, 'profile.html', context)
+                if flag > 0:
+                    context['change_error'] = "Password should not contain your name!"
+                    return render(request, 'profile.html', context)
+                if username.lower() in new_pass.lower():
+                    context['change_error'] = "Password should not contain your username!"
+                    return render(request, 'profile.html', context)
             context['change_success'] = "Password has been changed"
-            context['user'] = user
+            
         else:
             context['change_error'] = "Incorrect old password."
-            context['user'] = user
 
     return render(request, 'profile.html', context)

@@ -1,34 +1,36 @@
 from django.shortcuts import render
+from django.contrib import messages
 
 # Create your views here.
 from Product.models import Product, Transaction
 from SECPROG.views import index
 from User.models import User
 from .models import Review
-
+import logging
+logger = logging.getLogger(__name__)
 def add_cart(request):
     if request.method == "GET":
         item = {}
         num = abs(int(request.GET['num']))
         item['num'] = num
         item['id'] = int(request.GET['id'])
-
+        
         if 'cart' in request.session:
             request.session['cart'].append(item)
         else:
             request.session['cart'] = [item]
+        message = "Item successfully added!"
+    return cart(request, message)
 
-    return cart(request)
 
-
-def cart(request):
+def cart(request, message):
     context = {
         'total': 0.0, 'num': 0
     }
     user = User.objects.get(id=request.session['user'])
     context['user'] = user
     products = []
-
+    
     if 'cart' in request.session:
         for item in request.session['cart']:
             prod = {}
@@ -45,6 +47,7 @@ def cart(request):
                 pass
 
     context['products'] = products
+    context['message'] = message
     return render(request, 'cart.html', context)
 
 def detail(request, productid):
@@ -161,17 +164,37 @@ def financial(request):
 def clear_cart(request):
     if 'cart' in request.session:
         del request.session['cart']
-
-    return cart(request)
+    message = "Cleared!"
+    return cart(request, message)
 
 def buy(request):
+    context = {}
     if request.method == "POST":
         if 'cart' in request.session:
             for item in request.session['cart']:
                 try:
-                    product = Product.objects.get(id=item['id'])
-                    user = User.objects.get(id=request.session['user'])
-                    transaction = Transaction(product=product, user=user, quantity=item['num'], credit_card=request.POST['credit'])
-                    transaction.save()
+                    n = request.POST['credit']
+                    sum = 0
+                    alt = 0
+                    i = len(n) - 1
+                    num = 0
+                    while i >= 0:
+                       num = int( n[ i ] )
+                       if alt:
+                          num = num * 2
+                          if num > 9:
+                             num = ( num % 10 ) + 1  
+                       sum = sum + num 
+                       alt = not alt 
+                       i -= 1
+                    if sum % 10 == 0:
+                        product = Product.objects.get(id=item['id'])
+                        user = User.objects.get(id=request.session['user'])
+                        transaction = Transaction(product=product, user=user, quantity=item['num'], credit_card=request.POST['credit'])
+                        transaction.save()
+                    else:
+                        message = "Credit Card was declined!"
+                        return cart(request, message)
                 except Product.DoesNotExist and User.DoesNotExist:
                     pass
+    return clear_cart(request)

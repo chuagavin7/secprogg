@@ -26,7 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login_register/', user_views.login_register, name='login_register'),
     path('logout/', user_views.logout, name='logout'),
-    path('cart/', prod_views.cart, name='cart'),
+    path('cart/(?P<message>\s+)', prod_views.cart, name='cart'),
     path('detail/<int:productid>/', prod_views.detail, name='detail'),
     path('add_cart/', prod_views.add_cart, name='add_cart'),
     path('buy/', prod_views.buy, name='buy'),

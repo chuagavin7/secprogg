@@ -55,7 +55,7 @@
                     </li>
                 {% elif request.session.type == 3 %}
                     <li class="nav-item active">
-                        <a href="{% url 'cart' %}" class="nav-link">Cart</a>
+                        <a href="{% url 'cart' message=None %}" class="nav-link">Cart</a>
                     </li>
 
                     <li class="nav-item">
@@ -98,7 +98,7 @@
             <form action="{% url 'buy' %}" method="POST" class="form form-inline">
                 {% csrf_token %}
                 <div class="col">
-                    <input type="text" name="credit" id="credit" placeholder="Credit card number..." maxlength="12" class="form form-control" required>
+                    <input type="text" name="credit" id="credit" placeholder="Credit card number..." maxlength="16" class="form form-control" required>
                     <input type="text" name="ccv" id="ccv" placeholder="CCV" class="form form-control" maxlength="3" required>
                     <input type="month" class="form form-control" required>
                     <input type="submit" value="Purchase" class="btn btn-outline-success">
@@ -109,9 +109,15 @@
                 </div>
                 
             </form>
-            {% if buy_error %}
-                <div class="col"><div class="alert alert-danger"><b>Error!</b> {{ buy_error }}</div></div>
-            {% endif %}
+            
+                {% if message == "Credit Card was declined!" %} 
+                <div class="col"><div class="alert alert-danger"> {{ message }}</div></div>
+                {% elif message == "Item successfully added!" %} 
+                <div class="col"><div class="alert alert-danger"> {{ message }}</div></div>
+                {% elif message == "Cleared!"%}
+                <div class="col"><div class="alert alert-danger"> {{ message }}</div></div>
+                {% endif %}
+            
         </div>
 
       <div class="row">
