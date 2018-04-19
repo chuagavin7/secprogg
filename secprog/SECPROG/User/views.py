@@ -53,10 +53,24 @@ def login_register(request):
                 contact_num=request.POST['contact']
                 name=request.POST['name']
                 name = name.split(' ')
+                
+                if username in ['11111111','12345678', 'abcd1234', 'account1', 'administrator', 'monkey123', 'username', 'qwertyuiop', 'test1234']:
+                    context['reg_error'] = "Username too common!"
+                    return render(request, 'login.html', context)
+                    
+                if password in ['12345678', '11111111', 'password', 'letmein1', 'administrator', 'account1', 'qwertyuiop', 'basketball', 'testtest']:
+                    context['reg_error'] = "Password too common!"
+                    return render(request, 'login.html', context)
+                
+                
                 if password != password1:
                     context['reg_error'] = "Both entered passwords should match."
                     return render(request, 'login.html', context)
                 elif password == password1:
+                    if username == password:
+                        context['reg_error'] = "Username and password should not match!"
+                        return render(request, 'login.html', context)
+                    
                     if re.match('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9#?!@$%^&*-]).{7,}$', password) and re.match('^[a-zA-Z0-9].{5,}$', username) and re.match('^(\+)(639)([0-9]{9})$', contact_num) and username.lower() not in password.lower():
                         for n in name:
                             if n in password:

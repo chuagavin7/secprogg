@@ -36,7 +36,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/Users/gavinchua/Documents/secprogg/secprog/SECPROG/log/debug.log',
+            'filename': '/Users/EJ Caguiat/Desktop/secprogg/secprog/SECPROG/log/debug.log',
         },
     },
     'loggers': {
