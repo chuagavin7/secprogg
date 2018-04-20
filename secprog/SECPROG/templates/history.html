@@ -80,7 +80,7 @@
 
     <!-- Page Content -->
     <div class="container">
-
+    {% if request.session.type == 3 %}
       <!-- Page Heading -->
       <h1 class="my-4">Purchase History:
       </h1>
@@ -109,6 +109,13 @@
 
     </div>
     <!-- /.container -->
+    {% else %}
+        <div class="col mb-5">
+        <h3 class="my-4">Forbidden Error</h3>
+            <h5>Sorry, you are restricted from accessing this site.</h5>
+        </div>
+    {% endif %}
+    </div>
 
     <!-- Footer -->
     <footer class="py-5 bg-dark">
