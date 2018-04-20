@@ -88,27 +88,14 @@
       <!-- Page Heading -->
       <h1 class="my-4">Inventory:
       </h1>
-      {% if request.session.type == 3 %}
-            <p style = "display: inline-block;">Shop for:</p> 
-            <form action = "{% url 'index_page' page %}" style = "display: inline-block;">
-                <select name = "sort">
-                    <option>Analog Watch</option>
-                    <option>Digital Watch</option>
-                    <option>Smart Watch</option>
-                </select>
-                <input type = "submit" value = "Sort" class = "btn btn-outline-success btn-sm ml-3" style = "position: relative; top: -3.5px; right: 4px;">
-            </form>
-      {% endif %}
+
       <div class="row">
         {% for product in products %}
             <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
               <div class="card h-100">
                   
-                  <center>
-                   <a href="{% url 'detail' product.id %}">
-                     <input type = "image" img class="card-img-top" src="{{ product.picture.url }}" name="productid" value="{{ product.id }}" style = "height: 250px; width:auto; max-width: 500px;">
-                  </a> 
-                  </center>
+                  
+                    <input type = "image" img class="card-img-top" src="{{ product.picture.url }}" name="productid" value="{{ product.id }}">
                   
                 <div class="card-body">
                   <h4 class="card-title">
@@ -185,7 +172,7 @@
     <!-- Bootstrap core JavaScript -->
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
-      </div>
+
   </body>
 
 </html>
