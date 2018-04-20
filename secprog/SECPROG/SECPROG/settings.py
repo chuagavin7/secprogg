@@ -36,7 +36,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/Users/EJ Caguiat/Desktop/secprogg/secprog/SECPROG/log/debug.log',
+            'filename': '/Users/Elaine/Desktop/secprogg/secprog/SECPROG/log/debug.log',
         },
     },
     'loggers': {
@@ -156,6 +156,7 @@ SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = True
 SESSION_COOKIE_HTTPONLY = True
 
 import datetime as dt

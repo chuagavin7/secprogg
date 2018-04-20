@@ -21,6 +21,9 @@ from SECPROG import views
 from User import views as user_views
 from Product import views as prod_views
 
+handler404 = 'my_app.views.handler404'
+handler500 = 'my_app.views.handler500'
+
 urlpatterns = [
     path('session_security/', include('session_security.urls')),
     path('admin/', admin.site.urls),
@@ -39,6 +42,5 @@ urlpatterns = [
     path('add_product/', user_views.add_product, name='add_product'),
     path('edit/<int:id>/', user_views.edit, name='edit'),
     path('delete/<int:id>/', user_views.delete, name='delete'),
-    path('<int:page>/', views.index, name='index_page'),
     path('', views.index, name='index'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -74,7 +74,7 @@
 
           </ul>
 
-            <form action="{% url 'index_page' page %}" class="form form-inline ml-4">
+            <form action="{% url 'index' %}" class="form form-inline ml-4">
                 <input type = "text" name = "search" placeholder= "Search..." class = "box form-control form-control-sm ">
                 <input type="submit" value="Search" class="btn btn-outline-success btn-sm ml-3">
             </form>
@@ -131,32 +131,7 @@
         {% endfor %}
       <!-- /.row -->
 
-      <!-- Pagination -->
-      <div class="row">
-          <div class="col">
-              <ul class="pagination justify-content-center">
 
-                {% for p in products.paginator.page_range %}
-                    <li class="page-item {% if page == p %} active {% endif %}">
-                        <a href="{% url 'index_page' p %}" class="page-link">{{ p }}</a>
-                    </li>
-                {% endfor %}
-                <li class="page-item">
-                    {% if products.has_next %}
-                        <a class="page-link" href="{% url 'index_page' products.paginator.next_page_number %}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    {% else %}
-                        <span class="page-link">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                        </span>
-                    {% endif %}
-                </li>
-              </ul>
-          </div>
-      </div>
 
     </div>
     <!-- /.container -->

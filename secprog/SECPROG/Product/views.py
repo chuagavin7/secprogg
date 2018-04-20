@@ -6,8 +6,10 @@ from Product.models import Product, Transaction
 from SECPROG.views import index
 from User.models import User
 from .models import Review
+
 import logging
-logger = logging.getLogger(__name__)
+logging.basicConfig(filename='loglog.log',format='%(levelname)-5s %(message)-5s %(asctime)-5s ',level=logging.DEBUG)
+
 def add_cart(request):
     if request.method == "GET":
         item = {}

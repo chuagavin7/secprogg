@@ -5,12 +5,15 @@ import re
 from Product.models import Product
 from User.models import User, Staff
 from SECPROG.views import index
-import hashlib 
-import logging
+import hashlib
 from axes.utils import reset
 from django.contrib.auth.signals import user_login_failed
+import logging
+logging.basicConfig(filename='loglog.log',format='%(levelname)-5s %(message)-5s %(asctime)-5s ',level=logging.DEBUG)
+
 
 logger = logging.getLogger(__name__)
+
 def login_register(request):
     context = {}
     error = {}
@@ -32,15 +35,15 @@ def login_register(request):
                 return index(request)
 
             except User.DoesNotExist:
-                username = request.user.username
-                #inform axes of failed login
-                user_login_failed.send(
-                    sender = User,
-                    request = request,
-                    credentials = {
-                        'username': username,
-                    }
-                )
+                # username = request.user.username
+                # #inform axes of failed login
+                # user_login_failed.send(
+                #     sender = User,
+                #     request = request,
+                #     credentials = {
+                #         'username': username,
+                #     }
+                # )
                 context['log_error'] = 'Cannot find an account with that combination.'
         elif 'register' in request.POST:
             try:
