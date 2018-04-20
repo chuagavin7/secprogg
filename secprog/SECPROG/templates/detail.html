@@ -134,29 +134,6 @@
               </div>
             </div>
             {% endfor %}
-
-
-                <h4 class="my-4">Add a review</h4>
-                <form action="#" method="POST" class="form">
-                    <div class="container">
-                        <div class="row mb-3">
-                            <label for="title" class="col-4">Title</label>
-                            <input type="text" name="title" id="title" class="form-control form-control-sm col mr-3" required>
-                        </div>
-                        <div class="row mb-3">
-                            <textarea type="text" name="reviews" id="review" class="form-control form-control-sm col mr-3" rows="3" required></textarea>
-                        </div>
-
-                        <input type="hidden" name="submitreview" value="true" required>
-                        {% csrf_token %}
-                        <div class="row mb-3">
-                            <div class="col-1"><button type="submit" class="btn btn-success">Submit</button></div>
-                        </div>
-
-                    </div>
-                </form>
-
-
         </div>
 
 

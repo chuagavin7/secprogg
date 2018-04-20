@@ -9,11 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    {% if request.session.type == 0 %}
-    <title>Aion Wristwatches: Add an account</title>
-    {% else %}
-    <title>403: Forbidden Error</title>
-    {% endif %}
+
+    <title>Buy Watches</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.css' %}" rel="stylesheet">
@@ -71,7 +68,7 @@
     <div class="container">
 
       <!-- Page Heading -->
-        {% if request.session.type == 0 %}
+
         <div class="row">
             <div class="col mb-5">
             <h2 class="my-4">Add Account</h2>
@@ -120,12 +117,6 @@
             </form>
         </div>
         </div>
-        {% else %}
-            <div class="col mb-5">
-            <h3 class="my-4">Forbidden Error</h3>
-                <h5>Sorry, you are restricted from accessing this site.</h5>
-            </div>
-        {% endif %}
 
     </div>
     <!-- /.container -->
